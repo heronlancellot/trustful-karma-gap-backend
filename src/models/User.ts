@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import { EthereumAddress } from "../core/constants";
+import "../utils/mongooseEthereumType";
 
-//TODO: Create a typing for user address
 const userSchema = new mongoose.Schema({
-	connectedUserAddress: { type: String, required: true, unique: true },
-	createdAt: Date,
-	updatedAt: Date
+	connectedUserAddress: { type: mongoose.Schema.Types.EthereumAddress, required: true, unique: true },
+	createdAt: { type: Date, default: Date.now },
+	updatedAt: { type: Date, default: Date.now }
 });
 
 export const User = mongoose.model("User", userSchema);
