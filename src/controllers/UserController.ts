@@ -1,28 +1,29 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
+import { HttpCode } from "../core/constants";
 
 export class UserController {
-	async createUser(req: Request, res: Response) {
+	async createUser(req: Request, res: Response): Promise<void> {
 		try {
 			const { connectedUserAddress } = req.body;
 			const user = new User({ connectedUserAddress });
 			await user.save();
-			res.status(201).json(user);
+			res.status(HttpCode.CREATED).json(user);
 		} catch (error) {
-			res.status(400).json({ message: "Error creating user", error });
+			res.status(HttpCode.BAD_REQUEST).json({ message: "Error creating user", error });
 		}
 	}
 
-	async getUser(req: Request, res: Response) {
+	async getUser(req: Request, res: Response): Promise<void> {
 		try {
-			const { blockchainAddress } = req.params;
-			const user = await User.findOne({ blockchainAddress });
+			const { connectedUserAddress } = req.params;
+			const user = await User.findOne({ connectedUserAddress });
 			if (!user) {
-				return res.status(404).json({ message: "User not found" });
+				res.status(HttpCode.NOT_FOUND).json({ message: "User not found" });
 			}
 			res.json(user);
 		} catch (error) {
-			res.status(400).json({ message: "Error fetching user", error });
+			res.status(HttpCode.BAD_REQUEST).json({ message: "Error fetching user", error });
 		}
 	}
 }
