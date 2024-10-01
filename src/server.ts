@@ -2,7 +2,10 @@
 import express, { Express, Request, Response } from "express";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
-
+import { connectToDatabase } from "./core/database/databaseConnection";
+import userRoutes from "./routes/users";
+import reviewRoutes from "./routes/review";
+import { errorHandler } from "./middleware/errorHandler";
 import { HttpCode, ONE_HUNDRED, ONE_THOUSAND, SIXTY } from "./core/constants";
 
 interface ServerOptions {
@@ -13,13 +16,16 @@ interface ServerOptions {
 export class Server {
 	private readonly app: Express = express();
 	private readonly port: number;
+	private readonly apiPrefix: string;
 
 	constructor(options: ServerOptions) {
-		const { port } = options;
+		const { port, apiPrefix } = options;
 		this.port = port;
+		this.apiPrefix = apiPrefix;
 	}
 
 	async start(): Promise<void> {
+		await connectToDatabase();
 		//* Middlewares
 		this.app.use(express.json()); // parse json in request body (allow raw)
 		this.app.use(express.urlencoded({ extended: true })); // allow x-www-form-urlencoded
@@ -34,11 +40,10 @@ export class Server {
 		);
 
 		// Test rest api
-		this.app.get("/", (_req: Request, res: Response) => {
-			res.status(HttpCode.OK).send({
-				message: `Welcome to Initial API! \n Endpoints available at http://localhost:${this.port}/`
-			});
-		});
+		this.app.use(`${this.apiPrefix}/users`, userRoutes);
+		this.app.use(`${this.apiPrefix}/reviews`, reviewRoutes);
+
+		this.app.use(errorHandler);
 
 		this.app.listen(this.port, () => {
 			console.log(`Server running on port ${this.port}...`);
