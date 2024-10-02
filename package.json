@@ -39,6 +39,7 @@
 		"typescript-eslint": "^8.7.0"
 	},
 	"dependencies": {
+		"@types/cors": "^2.8.17",
 		"compression": "^1.7.4",
 		"dotenv": "^16.4.5",
 		"env-var": "^7.5.0",

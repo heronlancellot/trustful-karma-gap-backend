@@ -6,6 +6,7 @@ import userRouter from "./routes/users";
 import reviewRouter from "./routes/reviews";
 import { errorHandler } from "./middleware/errorHandler";
 import { ONE_HUNDRED, ONE_THOUSAND, SIXTY } from "./core/constants";
+import cors from "cors";
 
 interface ServerOptions {
 	port: number;
@@ -36,6 +37,7 @@ export class Server {
 		this.app.use(express.json()); // parse json in request body (allow raw)
 		this.app.use(express.urlencoded({ extended: true })); // allow x-www-form-urlencoded
 		this.app.use(compression());
+		this.app.use(cors());
 		//  limit repeated requests to public APIs
 		this.app.use(
 			rateLimit({
