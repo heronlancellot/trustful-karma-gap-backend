@@ -3,6 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+/**
+ * Main function to start the server
+ * @returns {Promise<void>} - Promise that resolves when the server is started
+ */
 async function main() {
 	const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 

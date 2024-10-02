@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 /**
- * Function used in the {@link_server.ts} file to connect to the MongoDB database
+ * Function used in the {@link server.ts} file to connect to the MongoDB database
  * @returns {Promise<void>} - Promise that resolves when the connection is successful
  */
 export async function connectToDatabase(): Promise<void> {
