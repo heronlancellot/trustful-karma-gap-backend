@@ -1,14 +1,12 @@
 import { envs } from "./core/config/env";
 import { Server } from "./server";
 
-(() => {
-	main();
-})();
+main();
 
-function main(): void {
+async function main(): Promise<void> {
 	const server = new Server({
 		port: envs.PORT,
 		apiPrefix: "/api"
 	});
-	void server.start();
+	await server.start();
 }

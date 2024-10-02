@@ -1,9 +1,9 @@
-// import express, { type Request, type Response } from "express";
 import express, { Express, Request, Response } from "express";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
 
 import { HttpCode, ONE_HUNDRED, ONE_THOUSAND, SIXTY } from "./core/constants";
+import cors from "cors";
 
 interface ServerOptions {
 	port: number;
@@ -24,6 +24,7 @@ export class Server {
 		this.app.use(express.json()); // parse json in request body (allow raw)
 		this.app.use(express.urlencoded({ extended: true })); // allow x-www-form-urlencoded
 		this.app.use(compression());
+		this.app.use(cors());
 		//  limit repeated requests to public APIs
 		this.app.use(
 			rateLimit({
