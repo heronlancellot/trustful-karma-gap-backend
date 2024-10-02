@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 
+/**
+ * Custom type for the Ethereum address format
+ * @extends {mongoose.SchemaType}
+ * @property {string} key - Key of the field in the MongoDB document
+ * @property {mongoose.SchemaTypeOptions<any>} options - Options for the custom type
+ */
 class EthereumAddressType extends mongoose.SchemaType {
 	constructor(key: string, options: mongoose.SchemaTypeOptions<any>) {
 		super(key, options, "EthereumAddress");
@@ -16,12 +22,14 @@ class EthereumAddressType extends mongoose.SchemaType {
 	}
 }
 
-mongoose.Schema.Types.EthereumAddress = EthereumAddressType as any;
+// Register the custom type
+mongoose.Schema.Types.EthereumAddress = EthereumAddressType;
 
+// Add type definition
 declare module "mongoose" {
 	namespace Schema {
 		namespace Types {
-			class EthereumAddress extends mongoose.SchemaType {}
+			export class EthereumAddress extends mongoose.SchemaType {}
 		}
 	}
 }

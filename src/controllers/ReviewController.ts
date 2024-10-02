@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PreReview } from "../models/Review";
 import { User } from "../models/User";
-import { HttpCode, CreatePreReviewRequest, EthereumAddress } from "../core/constants";
+import { HttpCode, PreReviewAnswers, CreatePreReviewRequest, EthereumAddress } from "../core/constants";
 
 /**
  * Class to manage the CRUD operations for the pre-review model
@@ -13,10 +13,7 @@ export class ReviewController {
 	 * @param res - Express response object to send the pre-review document
 	 * @returns {Promise<void>} - Promise that resolves when the pre-review document is created
 	 */
-	async createPreReview(
-		req: Request<{}, {}, CreatePreReviewRequest & { programId: number }>,
-		res: Response
-	): Promise<void> {
+	async createPreReview(req: Request<{}, {}, CreatePreReviewRequest>, res: Response): Promise<void> {
 		try {
 			const { preReviewAnswers, connectedUserAddress, programId } = req.body;
 			const user = await User.findOne({ connectedUserAddress });
@@ -45,7 +42,7 @@ export class ReviewController {
 	 * @param res - Express response object returning the status code and the pre-review documents
 	 * @returns {Promise<void>} - Promise that resolves when the pre-review documents are fetched
 	 */
-	async getPreReview(req: Request<{ connectedUserAddress: EthereumAddress }>, res: Response): Promise<void> {
+	async getPreReviewsByUser(req: Request<{ connectedUserAddress: EthereumAddress }>, res: Response): Promise<void> {
 		try {
 			const { connectedUserAddress } = req.params;
 			const user = await User.findOne({ connectedUserAddress });
