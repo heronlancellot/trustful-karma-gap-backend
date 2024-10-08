@@ -19,18 +19,20 @@ export class ReviewController {
 	 */
 	async createPreReview(req: Request<{}, {}, CreatePreReviewRequest>, res: Response): Promise<void> {
 		try {
-			const { preReviewAnswers, connectedUserAddress, programId } = req.body;
-			const user = await User.findOne({ connectedUserAddress });
+			const { preReviewAnswers, connectedUserAddress, grantId } = req.body;
 
+			let user = await User.findOne({ connectedUserAddress });
+
+			// Create a new user if not found
 			if (!user) {
-				res.status(HttpCode.NOT_FOUND).json({ message: "User not found" });
-				return;
+				user = new User({ connectedUserAddress });
+				await user.save();
 			}
 
 			const newPreReview = new PreReview({
 				user: user._id,
 				preReviewAnswers,
-				programId
+				grantId
 			});
 
 			await newPreReview.save();
