@@ -6,7 +6,7 @@ import Schema from "mongoose";
  * Schema definition for the pre-review model
  * @property {Schema.Types.ObjectId} user - ObjectId reference to the user document
  * @property {PreReviewAnswers} preReviewAnswers - Object containing the pre-review answers
- * @property {number} grantId - Id of the program the user is applying for
+ * @property {string} grantId - Id of the project the user is submitting a pre-review from
  * @property {Date} createdAt - Date when the pre-review document was created
  * @property {Date} updatedAt - Date when the pre-review document was last updated
  * @returns {Schema} - Mongoose schema definition for the pre-review model
