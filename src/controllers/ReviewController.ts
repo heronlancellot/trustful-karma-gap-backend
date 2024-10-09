@@ -9,24 +9,30 @@ import { HttpCode, PreReviewAnswers, CreatePreReviewRequest, EthereumAddress } f
 export class ReviewController {
 	/**
 	 * Function to create a pre-review document in MongoDB
-	 * @param req - Express request object containing the pre-review data
+	 * @param req - Express request object containing the pre-review data.
+	 * {} - Empty object for routes paremeters as it won't be used.
+	 * {} - Empty object for response body as it won't be used.
+	 * CreatePreReviewRequest - Custom type defined in @link ../core/constants/index.ts
 	 * @param res - Express response object to send the pre-review document
 	 * @returns {Promise<void>} - Promise that resolves when the pre-review document is created
+	 *
 	 */
 	async createPreReview(req: Request<{}, {}, CreatePreReviewRequest>, res: Response): Promise<void> {
 		try {
-			const { preReviewAnswers, connectedUserAddress, programId } = req.body;
-			const user = await User.findOne({ connectedUserAddress });
+			const { preReviewAnswers, connectedUserAddress, grantId } = req.body;
 
+			let user = await User.findOne({ connectedUserAddress });
+
+			// Create a new user if not found
 			if (!user) {
-				res.status(HttpCode.NOT_FOUND).json({ message: "User not found" });
-				return;
+				user = new User({ connectedUserAddress });
+				await user.save();
 			}
 
 			const newPreReview = new PreReview({
 				user: user._id,
 				preReviewAnswers,
-				programId
+				grantId
 			});
 
 			await newPreReview.save();
