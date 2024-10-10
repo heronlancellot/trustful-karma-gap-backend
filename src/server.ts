@@ -2,7 +2,6 @@ import express, { Express, Request, Response } from "express";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
 import { connectToDatabase } from "./core/database/databaseConnection";
-import userRouter from "./routes/users";
 import reviewRouter from "./routes/reviews";
 import { errorHandler } from "./middleware/errorHandler";
 import { ONE_HUNDRED, ONE_THOUSAND, SIXTY } from "./core/constants";
@@ -48,7 +47,6 @@ export class Server {
 		);
 
 		// Test rest api
-		this.app.use(`${this.apiPrefix}/users`, userRouter);
 		this.app.use(`${this.apiPrefix}/reviews`, reviewRouter);
 
 		this.app.use(errorHandler);
