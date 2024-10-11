@@ -62,7 +62,7 @@ export interface CreatePreReviewRequest {
 	preReviewAnswers: PreReviewAnswers;
 	connectedUserAddress: EthereumAddress;
 	grantId: string;
-	programId: string;
+	programId?: string;
 }
 
 /**
