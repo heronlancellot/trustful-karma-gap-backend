@@ -21,6 +21,8 @@ async function main() {
 	});
 
 	await server.start();
+
+	console.log("Chegamos aqui!");
 }
 
 main().catch((error) => {
