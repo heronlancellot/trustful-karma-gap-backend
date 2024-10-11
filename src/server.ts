@@ -51,6 +51,8 @@ export class Server {
 
 		this.app.use(errorHandler);
 
+		this.app.set("trust proxy", 1);
+
 		this.app.listen(this.port, "0.0.0.0", () => {
 			console.log(`Server running on port ${this.port}...`);
 		});
